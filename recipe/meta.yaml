@@ -1,5 +1,5 @@
 {% set name = "ewah-bool-utils" %}
-{% set version = "1.1.0" %}
+{% set version = "1.2.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,14 +7,14 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/ewah_bool_utils-{{ version }}.tar.gz
-  sha256: 7050b5a25f4df14f05f8898fd9e797cd0a0f7103207c618e0467a450d3dee987
+  sha256: f7826cb41b8eb6f012696c664b3dccd9df2d886f2061f031bfc5925a361bcead
   patches:
     - patches/crossc-openmp.patch  # [linux]
 
 build:
   skip: true  # [py<39 or python_impl == 'pypy']
   script: {{ PYTHON }} -m pip install . -vv
-  number: 1
+  number: 0
 
 requirements:
   build:
