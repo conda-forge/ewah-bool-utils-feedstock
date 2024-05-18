@@ -14,7 +14,7 @@ source:
 build:
   skip: true  # [py<39 or python_impl == 'pypy']
   script: {{ PYTHON }} -m pip install . -vv
-  number: 0
+  number: 1
 
 requirements:
   build:
@@ -24,6 +24,7 @@ requirements:
     - numpy                                  # [build_platform != target_platform]
     - libgomp                                # [linux]
     - {{ compiler('c') }}
+    - {{ stdlib("c") }}
     - {{ compiler('cxx') }}
   host:
     - python
@@ -32,7 +33,6 @@ requirements:
     - pip
   run:
     - python
-    - {{ pin_compatible('numpy') }}
 
 test:
   imports:
