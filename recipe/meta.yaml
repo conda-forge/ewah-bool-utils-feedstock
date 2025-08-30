@@ -14,7 +14,7 @@ source:
 build:
   skip: true  # [py<310 or python_impl == 'pypy']
   script: {{ PYTHON }} -m pip install . -vv
-  number: 0
+  number: 1
 
 requirements:
   build:
