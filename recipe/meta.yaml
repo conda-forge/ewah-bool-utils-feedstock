@@ -12,12 +12,16 @@ source:
     - patches/crossc-openmp.patch  # [linux]
 
 build:
-  skip: true  # [py<310 or python_impl == 'pypy']
+  number: 2
+  python_version_independent: true  # [py>=311 and is_abi3]
+  skip: true  # [py>=312 and is_abi3]
   script: {{ PYTHON }} -m pip install . -vv
-  number: 1
+  script_env:
+    - EWAH_BOOL_UTILS_LIMITED_API=1
 
 requirements:
   build:
+    - python-abi3                            # [py>=311 and is_abi3]
     - python                                 # [build_platform != target_platform]
     - cross-python_{{ target_platform }}     # [build_platform != target_platform]
     - cython                                 # [build_platform != target_platform]
@@ -37,12 +41,17 @@ requirements:
     - python
 
 test:
+  requires:
+    - pip
+    - abi3audit  # [py>=311 and is_abi3]
   imports:
     - ewah_bool_utils
   commands:
     - pip check
-  requires:
-    - pip
+    - abi3audit $SP_DIR/ewah_bool_utils/*.abi3.so -s -v --assume-minimum-abi3 3.11  # [unix and py>=311 and is_abi3]
+    # only check a single file on windows because I can't figure out the correct wildcaard expression
+    # this should be okay as long as there's nothing platform specific in `setupext.py`
+    - abi3audit %SP_DIR%/ewah_bool_utils/ewah_bool_wrap.pyd -s -v --assume-minimum-abi3 3.11     # [win and py>=311 and is_abi3]
 
 about:
   home: https://pypi.org/project/ewah-bool-utils/
