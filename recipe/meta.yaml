@@ -1,5 +1,5 @@
 {% set name = "ewah-bool-utils" %}
-{% set version = "1.3.0" %}
+{% set version = "1.3.1" %}
 
 package:
   name: {{ name|lower }}
@@ -7,12 +7,10 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/ewah_bool_utils-{{ version }}.tar.gz
-  sha256: 5768183dc723149bc8e9d6181d93bf69825f643034622cc275d919afb5f84668
-  patches:
-    - patches/crossc-openmp.patch  # [linux]
+  sha256: d1b4a78e5dd7967215d30a55ebbf54c2e83f563633c396931e0ef1483623eb51
 
 build:
-  skip: true  # [py<310 or python_impl == 'pypy']
+  skip: true  # [py<311 or python_impl == 'pypy']
   script: {{ PYTHON }} -m pip install . -vv
   number: 1
 
@@ -22,8 +20,7 @@ requirements:
     - cross-python_{{ target_platform }}     # [build_platform != target_platform]
     - cython                                 # [build_platform != target_platform]
     - numpy                                  # [build_platform != target_platform]
-    - libgomp                                # [linux]
-    - setuptools
+    - meson-python                           # [build_platform != target_platform]
     - {{ compiler('c') }}
     - {{ stdlib("c") }}
     - {{ compiler('cxx') }}
@@ -31,8 +28,8 @@ requirements:
     - python
     - cython
     - numpy
+    - meson-python
     - pip
-    - setuptools
   run:
     - python
 
@@ -50,7 +47,7 @@ about:
   license: Apache-2.0 AND BSD-3-Clause
   license_file:
     - LICENSE
-    - ewah_bool_utils/cpp/LICENSE
+    - src/ewah_bool_utils/cpp/LICENSE
 
 extra:
   recipe-maintainers:
