@@ -13,3 +13,4 @@ provider:
   win: azure
   osx_arm64: default
 test: native_and_emulated
+conda_build_tool: rattler-build
